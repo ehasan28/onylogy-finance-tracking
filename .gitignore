@@ -47,3 +47,11 @@ example
 
 # deploy artifacts (Vercel builds from source now)
 *.zip
+
+# Editor / tooling (local only)
+.vscode/
+.claude/
+
+# AI agent working notes (local only)
+CLAUDE.md
+AGENTS.md

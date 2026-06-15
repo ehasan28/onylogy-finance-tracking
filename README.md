@@ -1,13 +1,13 @@
 # 💰 Onylogy Finance Tracking
 
 A fast, offline-first personal income & expense tracker for **iPhone + Android**, built with Expo (React Native).
-Tailored for farming + development/freelancing + family-support income, in BDT (৳).
+Tailored for farming + development/freelancing + family-support income, in BDT (৳). Clean, Apple-minimal UI with full light & dark support.
 
-> **Status:** Phase 1 MVP — complete and runnable. All data is stored privately on the device (no account, no server).
+> **Status:** Live as an installable PWA, continuously deployed from this repo via Vercel. All data is stored privately on the device — no account, no server.
 
 ## Features
 - **Add transaction in seconds** — Income/Expense toggle, fast number keypad, 1-tap categories (recently-used first), optional payment method (Cash/bKash/Nagad/Rocket/Bank/Card), date stepper, note. Save / Save & add another / edit / delete.
-- **Dashboard** — monthly balance (animated count-up), income vs expense, animated income-target progress, income-by-source cards, recent transactions.
+- **Home** — monthly balance (animated count-up), income vs expense, animated income-target progress, income-by-source cards, recent transactions.
 - **History** — filter by type/group, search, grouped by date with daily totals; tap to edit.
 - **Reports** — 6-month net-balance trend, 🌾 **Farming Profit/Loss**, expense breakdown, income by source.
 - **Settings** — monthly target & expense limit, manage payment methods & categories, currency symbol, **CSV export**, reset.
@@ -26,13 +26,12 @@ eas build -p android --profile preview   # produces an installable .apk
 ```
 Download the APK, copy to your Android phone, enable "install unknown apps", install. **$0.**
 
-## Free iPhone app (PWA — Add to Home Screen)
+## Deploy (free, automatic via Vercel)
+This repo is wired for **continuous deployment** — every push to `main` triggers a Vercel build and ships it live (config in [`vercel.json`](vercel.json)):
 ```bash
-npx expo export -p web            # static site in dist/
-# deploy dist/ to any free host (Vercel / Netlify / Cloudflare Pages)
+git push        # Vercel runs `expo export -p web` and deploys dist/
 ```
-Open the hosted URL in **Safari → Share → Add to Home Screen**. Runs full-screen, offline-capable. **$0.**
-*(For full offline asset caching, add a service worker at deploy time.)*
+Then open the deployed URL in **Safari → Share → Add to Home Screen** for a full-screen, offline-capable iPhone app. A service worker (`public/sw.js`) caches assets for offline use. **$0.**
 
 ## Publish to stores (optional, later)
 - **Google Play:** `eas build -p android --profile production` → upload AAB. **$25 one-time.**
@@ -53,7 +52,7 @@ Built on the bleeding-edge **Expo SDK 56** (React 19.2, RN 0.85, Reanimated 4). 
 src/
   app/                 # expo-router routes
     _layout.tsx        # root Stack (+ /add modal)
-    (tabs)/            # Dashboard, History, Reports, Settings + custom tab bar
+    (tabs)/            # Home, History, Reports, Settings + custom tab bar
     add.tsx            # Add / Edit / Delete transaction (modal)
     categories.tsx     # Category manager
   components/          # screen, ui, keypad, animated, transaction-row, bottom-tab-bar
@@ -64,4 +63,4 @@ src/
 ```
 
 ## Roadmap (Phase 2+)
-Bangla (বাংলা) i18n · dark mode · app lock (biometric) · recurring transactions · JSON backup/restore · optional Supabase cloud sync · (Android-only, personal) bKash/Nagad SMS parsing.
+Bangla (বাংলা) i18n · app lock (biometric) · recurring transactions · JSON backup/restore · optional Supabase cloud sync · (Android-only, personal) bKash/Nagad SMS parsing.
