@@ -1,56 +1,67 @@
-# Welcome to your Expo app 👋
+# 💰 Onylogy Finance Tracking
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A fast, offline-first personal income & expense tracker for **iPhone + Android**, built with Expo (React Native).
+Tailored for farming + development/freelancing + family-support income, in BDT (৳).
 
-## Get started
+> **Status:** Phase 1 MVP — complete and runnable. All data is stored privately on the device (no account, no server).
 
-1. Install dependencies
+## Features
+- **Add transaction in seconds** — Income/Expense toggle, fast number keypad, 1-tap categories (recently-used first), optional payment method (Cash/bKash/Nagad/Rocket/Bank/Card), date stepper, note. Save / Save & add another / edit / delete.
+- **Dashboard** — monthly balance (animated count-up), income vs expense, animated income-target progress, income-by-source cards, recent transactions.
+- **History** — filter by type/group, search, grouped by date with daily totals; tap to edit.
+- **Reports** — 6-month net-balance trend, 🌾 **Farming Profit/Loss**, expense breakdown, income by source.
+- **Settings** — monthly target & expense limit, manage payment methods & categories, currency symbol, **CSV export**, reset.
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+## Run it now (free, on your phone)
 ```bash
-npm run reset-project
+npm install
+npx expo start        # press w for web, or scan the QR with the Expo Go app
+```
+Install **Expo Go** (App Store / Play Store) and scan the QR to use it live on your phone while developing.
+
+## Build a free Android app (APK)
+```bash
+npm i -g eas-cli && eas login
+eas build -p android --profile preview   # produces an installable .apk
+```
+Download the APK, copy to your Android phone, enable "install unknown apps", install. **$0.**
+
+## Free iPhone app (PWA — Add to Home Screen)
+```bash
+npx expo export -p web            # static site in dist/
+# deploy dist/ to any free host (Vercel / Netlify / Cloudflare Pages)
+```
+Open the hosted URL in **Safari → Share → Add to Home Screen**. Runs full-screen, offline-capable. **$0.**
+*(For full offline asset caching, add a service worker at deploy time.)*
+
+## Publish to stores (optional, later)
+- **Google Play:** `eas build -p android --profile production` → upload AAB. **$25 one-time.**
+- **Apple App Store:** `eas build -p ios && eas submit`. **$99/year** (also removes PWA limitations).
+
+## Sample data
+The app currently contains demo transactions for June/May 2026. To start clean: **Settings → Reset all data**.
+
+## Tech notes (SDK 56)
+Built on the bleeding-edge **Expo SDK 56** (React 19.2, RN 0.85, Reanimated 4). For reliability on this version, a few plan libraries were swapped for built-ins with identical results:
+- **Styling:** StyleSheet + theme tokens (`src/constants/theme.ts`) instead of NativeWind.
+- **Animation:** Reanimated 4 directly (count-up, progress bar, list transitions) instead of Moti.
+- **Charts:** lightweight animated Views instead of react-native-gifted-charts (avoids the native linear-gradient dep; works on web/PWA + native).
+- **Storage:** Zustand + AsyncStorage (`src/store/useStore.ts`) instead of expo-sqlite, so the same code runs on Android, the iPhone PWA, and web. Small data set, JS aggregation in `src/lib/calc.ts`.
+
+## Project structure
+```
+src/
+  app/                 # expo-router routes
+    _layout.tsx        # root Stack (+ /add modal)
+    (tabs)/            # Dashboard, History, Reports, Settings + custom tab bar
+    add.tsx            # Add / Edit / Delete transaction (modal)
+    categories.tsx     # Category manager
+  components/          # screen, ui, keypad, animated, transaction-row, bottom-tab-bar
+  store/useStore.ts    # Zustand store (persisted to AsyncStorage)
+  lib/                 # calc, format, export (CSV), haptics, id
+  data/seed.ts         # default categories & payment methods
+  constants/theme.ts   # colors, spacing, finance palette
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Roadmap (Phase 2+)
+Bangla (বাংলা) i18n · dark mode · app lock (biometric) · recurring transactions · JSON backup/restore · optional Supabase cloud sync · (Android-only, personal) bKash/Nagad SMS parsing.

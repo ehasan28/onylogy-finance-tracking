@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "onylogy-finance-tracking",
+    "name": "Onylogy Finance Tracking",
     "slug": "onylogy-finance-tracking",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,29 +12,33 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#166534",
+        "foregroundImage": "./assets/images/icon-foreground.png"
       },
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "name": "Onylogy Finance Tracking",
+      "shortName": "Onylogy",
+      "themeColor": "#166534",
+      "backgroundColor": "#ffffff",
+      "display": "standalone"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#166534",
           "android": {
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 76
           }
         }
-      ]
+      ],
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true,

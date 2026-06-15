@@ -41,3 +41,9 @@ example
 # generated native folders
 /ios
 /android
+
+# Vercel
+.vercel
+
+# deploy artifacts (Vercel builds from source now)
+*.zip
