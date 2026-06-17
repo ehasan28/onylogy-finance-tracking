@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
 import { Screen } from '@/components/screen';
 import { Card, PrimaryButton, ScreenTitle, SectionLabel, SegmentedControl } from '@/components/ui';
@@ -30,6 +30,7 @@ export default function SettingsScreen() {
   const transactions = useStore((s) => s.transactions);
   const resetAll = useStore((s) => s.resetAll);
   const setTheme = useStore((s) => s.setTheme);
+  const setVoiceAutoSave = useStore((s) => s.setVoiceAutoSave);
 
   const [incomeTarget, setIncomeTarget] = useState(target?.incomeTarget ? String(target.incomeTarget) : '');
   const [expenseLimit, setExpenseLimit] = useState(target?.expenseLimit ? String(target.expenseLimit) : '');
@@ -64,6 +65,20 @@ export default function SettingsScreen() {
             { label: 'System', value: 'system' },
             { label: 'Dark', value: 'dark' },
           ]}
+        />
+      </Card>
+
+      <SectionLabel style={styles.blockLabel}>Voice quick-add</SectionLabel>
+      <Card style={styles.rowBetween}>
+        <View style={styles.voiceText}>
+          <Text style={[styles.rowText, { color: theme.text }]}>Save instantly</Text>
+          <Text style={[styles.rowSub, { color: theme.textSecondary }]}>Skip the review screen after speaking</Text>
+        </View>
+        <Switch
+          value={!!settings.voiceAutoSave}
+          onValueChange={setVoiceAutoSave}
+          trackColor={{ false: theme.backgroundSelected, true: theme.accent }}
+          thumbColor="#fff"
         />
       </Card>
 
@@ -192,6 +207,8 @@ const styles = StyleSheet.create({
   addRow: { flexDirection: 'row', gap: Spacing.two, alignItems: 'center' },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   rowText: { fontSize: 16, fontWeight: '500' },
+  rowSub: { fontSize: 13, fontWeight: '400', marginTop: 2 },
+  voiceText: { flex: 1, paddingRight: Spacing.three },
   rowRight: { flexDirection: 'row', alignItems: 'center', gap: Spacing.one },
   rowValue: { fontSize: 15, fontWeight: '500' },
   about: { textAlign: 'center', marginTop: Spacing.five, lineHeight: 20, fontSize: 13, fontWeight: '500' },

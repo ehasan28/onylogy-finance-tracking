@@ -4,6 +4,9 @@
   "devCommand": "expo",
   "cleanUrls": true,
   "framework": null,
+  "functions": {
+    "api/**/*.ts": { "maxDuration": 60 }
+  },
   "rewrites": [
     {
       "source": "/:path*",

@@ -32,18 +32,31 @@ export default function AddScreen() {
   const updateTransaction = useStore((s) => s.updateTransaction);
   const deleteTransaction = useStore((s) => s.deleteTransaction);
 
-  const { id: editId } = useLocalSearchParams<{ id?: string }>();
+  const params = useLocalSearchParams<{
+    id?: string;
+    from?: string;
+    type?: string;
+    amount?: string;
+    categoryId?: string;
+    paymentMethod?: string;
+    date?: string;
+    note?: string;
+  }>();
+  const editId = params.id;
   const existing = useStore((s) => (editId ? s.transactions.find((t) => t.id === editId) : undefined));
   const isEdit = !!existing;
+  const fromVoice = params.from === 'voice' && !isEdit;
+  const prefillType: TxType | undefined =
+    params.type === 'income' || params.type === 'expense' ? params.type : undefined;
 
-  const [type, setType] = useState<TxType>(existing?.type ?? settings.defaultType);
-  const [amountStr, setAmountStr] = useState(existing ? String(existing.amount) : '');
-  const [categoryId, setCategoryId] = useState<string | null>(existing?.categoryId ?? null);
-  const [dateISO, setDateISO] = useState(existing?.date ?? todayISO());
+  const [type, setType] = useState<TxType>(existing?.type ?? prefillType ?? settings.defaultType);
+  const [amountStr, setAmountStr] = useState(existing ? String(existing.amount) : params.amount ?? '');
+  const [categoryId, setCategoryId] = useState<string | null>(existing?.categoryId ?? params.categoryId ?? null);
+  const [dateISO, setDateISO] = useState(existing?.date ?? params.date ?? todayISO());
   const [paymentMethod, setPaymentMethod] = useState<string | undefined>(
-    existing?.paymentMethod ?? settings.lastPaymentMethod
+    existing?.paymentMethod ?? params.paymentMethod ?? settings.lastPaymentMethod
   );
-  const [note, setNote] = useState(existing?.note ?? '');
+  const [note, setNote] = useState(existing?.note ?? params.note ?? '');
   const [savedFlash, setSavedFlash] = useState(false);
   const [datePicker, setDatePicker] = useState(false);
 
@@ -158,7 +171,15 @@ export default function AddScreen() {
       <View style={styles.amountWrap}>
         <Text style={[styles.amount, { color: tone }, Tabular]}>৳{displayAmount}</Text>
         <Text style={[styles.amountSub, { color: theme.textSecondary }]}>
-          {savedFlash ? 'Saved ✓' : isEdit ? 'Editing transaction' : type === 'income' ? 'Money in' : 'Money out'}
+          {savedFlash
+            ? 'Saved ✓'
+            : isEdit
+              ? 'Editing transaction'
+              : fromVoice
+                ? 'From voice · check & save'
+                : type === 'income'
+                  ? 'Money in'
+                  : 'Money out'}
         </Text>
       </View>
 

@@ -32,6 +32,7 @@ interface FinanceState {
   setCurrencySymbol: (symbol: string) => void;
   setDefaultType: (type: TxType) => void;
   setTheme: (theme: ThemePref) => void;
+  setVoiceAutoSave: (v: boolean) => void;
   resetAll: () => void;
 }
 
@@ -39,6 +40,7 @@ const DEFAULT_SETTINGS: Settings = {
   currencySymbol: '৳',
   defaultType: 'expense',
   theme: 'light',
+  voiceAutoSave: false,
 };
 
 export const useStore = create<FinanceState>()(
@@ -109,6 +111,7 @@ export const useStore = create<FinanceState>()(
       setDefaultType: (type) =>
         set((s) => ({ settings: { ...s.settings, defaultType: type } })),
       setTheme: (theme) => set((s) => ({ settings: { ...s.settings, theme } })),
+      setVoiceAutoSave: (v) => set((s) => ({ settings: { ...s.settings, voiceAutoSave: v } })),
 
       resetAll: () =>
         set({

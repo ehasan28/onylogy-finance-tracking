@@ -40,4 +40,6 @@ export interface Settings {
   defaultType: TxType;
   lastPaymentMethod?: string;
   theme?: ThemePref;
+  /** Voice quick-add: when true, skip the review screen and save immediately. */
+  voiceAutoSave?: boolean;
 }
