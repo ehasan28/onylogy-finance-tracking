@@ -1,8 +1,23 @@
 import { GoogleGenAI, Type } from '@google/genai';
 import Groq from 'groq-sdk';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+let geminiClient: GoogleGenAI | null = null;
+function gemini(): GoogleGenAI {
+  if (!geminiClient) {
+    if (!process.env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY is not set on the server');
+    geminiClient = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  }
+  return geminiClient;
+}
+
+let groqClient: Groq | null = null;
+function groq(): Groq {
+  if (!groqClient) {
+    if (!process.env.GROQ_API_KEY) throw new Error('GROQ_API_KEY is not set on the server');
+    groqClient = new Groq({ apiKey: process.env.GROQ_API_KEY });
+  }
+  return groqClient;
+}
 
 export type CategoryLite = { id: string; name: string; type: 'income' | 'expense'; group: string };
 
@@ -101,7 +116,7 @@ function normalize(raw: Record<string, unknown>, input: ParseInput): ParsedTx {
 }
 
 async function viaGemini(input: ParseInput): Promise<ParsedTx> {
-  const res = await ai.models.generateContent({
+  const res = await gemini().models.generateContent({
     model: 'gemini-2.5-flash',
     contents: input.transcript,
     config: {
@@ -115,7 +130,7 @@ async function viaGemini(input: ParseInput): Promise<ParsedTx> {
 }
 
 async function viaGroq(input: ParseInput): Promise<ParsedTx> {
-  const res = await groq.chat.completions.create({
+  const res = await groq().chat.completions.create({
     model: 'llama-3.3-70b-versatile',
     temperature: 0,
     response_format: { type: 'json_object' },

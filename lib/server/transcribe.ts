@@ -1,6 +1,14 @@
 import Groq from 'groq-sdk';
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+let client: Groq | null = null;
+/** Lazily construct the Groq client so a missing key fails per-request, not at module load. */
+function groq(): Groq {
+  if (!client) {
+    if (!process.env.GROQ_API_KEY) throw new Error('GROQ_API_KEY is not set on the server');
+    client = new Groq({ apiKey: process.env.GROQ_API_KEY });
+  }
+  return client;
+}
 
 /**
  * Bias Whisper toward this app's finance vocabulary (mobile-banking apps, taka, Banglish
@@ -16,7 +24,7 @@ const VOCAB_PROMPT =
 
 /** Transcribe an audio clip with Groq's free-tier Whisper-large-v3 (Bangla + code-switching). */
 export async function transcribe(file: File): Promise<string> {
-  const res = await groq.audio.transcriptions.create({
+  const res = await groq().audio.transcriptions.create({
     file,
     model: 'whisper-large-v3',
     language: 'bn',
