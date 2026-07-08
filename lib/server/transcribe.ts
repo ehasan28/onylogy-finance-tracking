@@ -15,12 +15,14 @@ function groq(): Groq {
  * number words, farm/freelance terms) so they survive transcription instead of being
  * "corrected" into common words. Whisper uses `prompt` only as a hint; it is not output.
  */
+// Written in Bengali script on purpose: Whisper mirrors the prompt's script, so a Bangla-script
+// hint makes it transcribe Bangla speech in Bangla (না রোমানাইজড). English words still pass through.
 const VOCAB_PROMPT =
-  'A personal finance voice note in mixed Bangla and English (Banglish). ' +
-  'Payment methods: bKash, Nagad, Rocket, Cash, Bank Transfer, Card. ' +
-  'Amounts in taka (৳): 500 taka, panch sho, hajar, der hajar, dui hajar, ad-sho. ' +
-  'Topics: fuel, transport, bazar, food, seeds, sar (fertilizer), kitnashok, sech, mojuri (labor), ' +
-  'mobile recharge, internet, hosting, Fiverr, Upwork, client payment, fosol bikri (crop sale), doodh, dim.';
+  'এটি একটি ব্যক্তিগত আয়-ব্যয়ের ভয়েস নোট, বাংলা ও ইংরেজি মিশিয়ে বলা। ' +
+  'পেমেন্ট মাধ্যম: বিকাশ, নগদ, রকেট, ক্যাশ, ব্যাংক ট্রান্সফার, কার্ড। ' +
+  'টাকার অঙ্ক: পাঁচশো টাকা, হাজার, দেড় হাজার, দুই হাজার, পাঁচ হাজার, লাখ। ' +
+  'বিষয়: জ্বালানি, যাতায়াত, বাজার, খাবার, বীজ, সার, কীটনাশক, সেচ, মজুরি, ' +
+  'মোবাইল রিচার্জ, ইন্টারনেট, হোস্টিং, ফসল বিক্রি, দুধ, ডিম, ক্লায়েন্ট পেমেন্ট।';
 
 /** Transcribe an audio clip with Groq's free-tier Whisper-large-v3 (Bangla + code-switching). */
 export async function transcribe(file: File): Promise<string> {

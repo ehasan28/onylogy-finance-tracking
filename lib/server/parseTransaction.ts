@@ -48,6 +48,7 @@ function buildSystem(input: ParseInput): string {
   return [
     'You convert a personal-finance voice note (mixed Bangla + English, "Banglish") into ONE transaction.',
     `Today is ${input.today}. Currency is ${input.currency} (Bangladeshi taka).`,
+    'The transcript may be in Bangla (Bengali script), romanized Bangla, English, or a mix — understand all of them equally well.',
     '',
     'Available categories — choose the single best categoryId from this list:',
     cats,
@@ -59,9 +60,9 @@ function buildSystem(input: ParseInput): string {
     `- type: "expense" for money spent/bought/paid; "income" for money received/earned/sold. If unclear use "${input.defaultType}".`,
     '- amount: a positive number in taka. Understand Banglish numbers: "panch sho"=500, "hajar"=1000, "der hajar"=1500, "dui hajar"=2000, "sho"=hundred, "lakh"=100000. Strip the currency word.',
     '- categoryId: the best-matching id above for what was bought/earned, or "" if nothing fits. categoryGuess: a short human label for the category you inferred (even if categoryId is "").',
-    '- paymentMethod: one of the methods above if mentioned (bikash/bkash→bKash, nagad→Nagad, rocket→Rocket, cash/nogod→Cash, bank→Bank Transfer, card→Card); else "".',
-    '- date: YYYY-MM-DD. "kal/gotokal"=yesterday, "aj/ajke/today"=today, "porshu"=day before yesterday; default today.',
-    '- note: a short clean description; keep the wording, names and places the speaker used.',
+    '- paymentMethod: one of the methods above if mentioned (বিকাশ/bikash/bkash→bKash, নগদ/nagad→Nagad, রকেট/rocket→Rocket, ক্যাশ/নগদ টাকা/cash/nogod→Cash, ব্যাংক/bank→Bank Transfer, কার্ড/card→Card); else "".',
+    '- date: YYYY-MM-DD. "kal/gotokal/গতকাল"=yesterday, "aj/ajke/আজ/আজকে/today"=today, "porshu/পরশু"=day before yesterday; default today.',
+    "- note: a short, natural description in the SAME language and script as the transcript (Bangla script if the transcript is Bangla; English if English). Do NOT transliterate or translate — keep the speaker's own words.",
     '- confidence: 0..1, your certainty about amount + category. Be honest; low values trigger a manual review.',
   ].join('\n');
 }
