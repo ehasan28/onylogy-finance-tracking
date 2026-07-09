@@ -7,7 +7,7 @@ import { Screen } from '@/components/screen';
 import { Amount, Card, IconCircle, ScreenTitle, SectionLabel } from '@/components/ui';
 import { GroupColors, Spacing, Tabular } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
-import { byMonth, categoryTotals, farmingPL, groupTotals, totals } from '@/lib/calc';
+import { byMonth, categoryTotals, groupTotals, totals } from '@/lib/calc';
 import { addMonths, currentMonthKey, money, monthLabel, shortMonthLabel } from '@/lib/format';
 import { useStore } from '@/store/useStore';
 
@@ -50,7 +50,6 @@ export default function ReportsScreen() {
   const monthTx = useMemo(() => byMonth(transactions, mk), [transactions, mk]);
   const t = useMemo(() => totals(monthTx), [monthTx]);
   const expenseCats = useMemo(() => categoryTotals(monthTx, categories, 'expense'), [monthTx, categories]);
-  const farm = useMemo(() => farmingPL(monthTx, categories), [monthTx, categories]);
   const incomeGroups = useMemo(
     () => Object.entries(groupTotals(monthTx, categories, 'income')).sort((a, b) => b[1] - a[1]),
     [monthTx, categories]
@@ -67,7 +66,7 @@ export default function ReportsScreen() {
         <ScreenTitle>Reports</ScreenTitle>
         <Card>
           <Text style={[styles.empty, { color: theme.textSecondary }]}>
-            Add some transactions and your charts, farming profit/loss, and breakdowns will appear here.
+            Add some transactions and your charts and breakdowns will appear here.
           </Text>
         </Card>
       </Screen>
@@ -106,25 +105,7 @@ export default function ReportsScreen() {
         </Pressable>
       </View>
 
-      <SectionLabel>Farming profit / loss</SectionLabel>
-      <Card style={styles.farmCard}>
-        <View style={styles.farmCol}>
-          <Text style={[styles.muted, { color: theme.textSecondary }]}>Income</Text>
-          <Text style={[styles.farmVal, { color: theme.income }, Tabular]}>{money(farm.income, symbol)}</Text>
-        </View>
-        <View style={styles.farmCol}>
-          <Text style={[styles.muted, { color: theme.textSecondary }]}>Expense</Text>
-          <Text style={[styles.farmVal, { color: theme.expense }, Tabular]}>{money(farm.expense, symbol)}</Text>
-        </View>
-        <View style={styles.farmCol}>
-          <Text style={[styles.muted, { color: theme.textSecondary }]}>Profit</Text>
-          <Text style={[styles.farmVal, { color: farm.profit >= 0 ? theme.income : theme.expense }, Tabular]}>
-            {money(farm.profit, symbol)}
-          </Text>
-        </View>
-      </Card>
-
-      <SectionLabel style={styles.blockLabel}>Where money went · expenses</SectionLabel>
+      <SectionLabel>Where money went · expenses</SectionLabel>
       <Card style={styles.gap}>
         {t.expense > 0 ? (
           <>
@@ -189,9 +170,6 @@ const styles = StyleSheet.create({
   captionRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.one, marginTop: Spacing.three },
   monthRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Spacing.four, marginTop: Spacing.five, marginBottom: Spacing.three },
   monthLabel: { fontSize: 16, fontWeight: '600' },
-  farmCard: { flexDirection: 'row', justifyContent: 'space-between' },
-  farmCol: { gap: 3 },
-  farmVal: { fontSize: 16, fontWeight: '600' },
   stack: { flexDirection: 'row', height: 16, borderRadius: 8, overflow: 'hidden' },
   legendRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.three },
   legendGap: { marginTop: Spacing.three },

@@ -238,7 +238,7 @@ export default function AddScreen() {
         <TextInput
           value={note}
           onChangeText={setNote}
-          placeholder="e.g. sold rice to local market"
+          placeholder="e.g. lunch, bill, groceries"
           placeholderTextColor={theme.tertiary}
           style={[styles.note, { backgroundColor: theme.backgroundElement, color: theme.text }]}
         />

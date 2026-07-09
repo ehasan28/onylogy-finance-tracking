@@ -15,11 +15,6 @@ export const DEFAULT_PAYMENT_METHODS: string[] = [
 /** Category icons are Ionicons names (iOS-style line icons). */
 export const DEFAULT_CATEGORIES: Category[] = [
   // ---------- INCOME ----------
-  { id: 'inc_crop', name: 'Crop sales', type: 'income', group: 'Farming', icon: 'leaf-outline', color: g('Farming') },
-  { id: 'inc_livestock', name: 'Livestock', type: 'income', group: 'Farming', icon: 'paw-outline', color: g('Farming') },
-  { id: 'inc_veg', name: 'Vegetables', type: 'income', group: 'Farming', icon: 'nutrition-outline', color: g('Farming') },
-  { id: 'inc_farm_other', name: 'Other farm income', type: 'income', group: 'Farming', icon: 'flower-outline', color: g('Farming') },
-
   { id: 'inc_fiverr', name: 'Fiverr', type: 'income', group: 'Development', icon: 'briefcase-outline', color: g('Development') },
   { id: 'inc_upwork', name: 'Upwork', type: 'income', group: 'Development', icon: 'laptop-outline', color: g('Development') },
   { id: 'inc_clients', name: 'Direct clients', type: 'income', group: 'Development', icon: 'people-outline', color: g('Development') },
@@ -32,14 +27,6 @@ export const DEFAULT_CATEGORIES: Category[] = [
   { id: 'inc_misc', name: 'Misc', type: 'income', group: 'Other', icon: 'ellipsis-horizontal', color: g('Other') },
 
   // ---------- EXPENSE ----------
-  { id: 'exp_seeds', name: 'Seeds', type: 'expense', group: 'Farming', icon: 'leaf-outline', color: g('Farming') },
-  { id: 'exp_fertilizer', name: 'Fertilizer', type: 'expense', group: 'Farming', icon: 'flask-outline', color: g('Farming') },
-  { id: 'exp_pesticide', name: 'Pesticide', type: 'expense', group: 'Farming', icon: 'bug-outline', color: g('Farming') },
-  { id: 'exp_labor', name: 'Labor', type: 'expense', group: 'Farming', icon: 'people-outline', color: g('Farming') },
-  { id: 'exp_irrigation', name: 'Irrigation', type: 'expense', group: 'Farming', icon: 'water-outline', color: g('Farming') },
-  { id: 'exp_equipment', name: 'Equipment', type: 'expense', group: 'Farming', icon: 'construct-outline', color: g('Farming') },
-  { id: 'exp_land', name: 'Land/Lease', type: 'expense', group: 'Farming', icon: 'map-outline', color: g('Farming') },
-
   { id: 'exp_food', name: 'Food', type: 'expense', group: 'Personal', icon: 'restaurant-outline', color: g('Personal') },
   { id: 'exp_transport', name: 'Transport', type: 'expense', group: 'Personal', icon: 'bus-outline', color: g('Personal') },
   { id: 'exp_mobile', name: 'Mobile/Internet', type: 'expense', group: 'Personal', icon: 'wifi-outline', color: g('Personal') },

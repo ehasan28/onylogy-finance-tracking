@@ -125,12 +125,22 @@ export const useStore = create<FinanceState>()(
     {
       name: 'onylogy-finance-v1',
       storage: createJSONStorage(() => AsyncStorage),
-      version: 1,
+      version: 2,
       migrate: (persisted: any) => {
         if (persisted?.categories) {
+          // v1: emoji icons → Ionicons + refreshed group colors
           persisted.categories = persisted.categories.map((c: Category) =>
             SEED_ICONS[c.id] ? { ...c, icon: SEED_ICONS[c.id], color: GroupColors[c.group] ?? c.color } : c
           );
+          // v2: drop the Farming group entirely (no longer tracked in this app)
+          persisted.categories = persisted.categories.filter((c: Category) => c.group !== 'Farming');
+          // reassign any transactions that pointed at a now-removed category
+          if (Array.isArray(persisted.transactions)) {
+            const validIds = new Set<string>(persisted.categories.map((c: Category) => c.id));
+            persisted.transactions = persisted.transactions.map((t: Transaction) =>
+              validIds.has(t.categoryId) ? t : { ...t, categoryId: t.type === 'income' ? 'inc_misc' : 'exp_other' }
+            );
+          }
         }
         return persisted;
       },

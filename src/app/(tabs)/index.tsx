@@ -30,6 +30,7 @@ export default function DashboardScreen() {
 
   const monthTx = useMemo(() => byMonth(transactions, mk), [transactions, mk]);
   const t = useMemo(() => totals(monthTx), [monthTx]);
+  const allTime = useMemo(() => totals(transactions), [transactions]);
   const incomeGroups = useMemo(() => groupTotals(monthTx, categories, 'income'), [monthTx, categories]);
   const cmap = useMemo(() => catMap(categories), [categories]);
   const recent = useMemo(
@@ -57,6 +58,19 @@ export default function DashboardScreen() {
 
   return (
     <Screen>
+      {/* Total balance — all-time, updates on every add / delete */}
+      <Animated.View entering={FadeInDown.duration(360)}>
+        <Card style={styles.totalCard}>
+          <Text style={[styles.totalCaption, { color: theme.textSecondary }]}>Total balance</Text>
+          <CountUpMoney
+            value={allTime.balance}
+            symbol={symbol}
+            style={[styles.totalValue, { color: allTime.balance < 0 ? theme.expense : theme.text }, Tabular]}
+          />
+          <Text style={[styles.totalSub, { color: theme.tertiary }]}>All income minus all expenses, across every month</Text>
+        </Card>
+      </Animated.View>
+
       {/* Month */}
       <View style={styles.monthRow}>
         <Pressable hitSlop={10} onPress={() => setMk((m) => addMonths(m, -1))}>
@@ -74,7 +88,7 @@ export default function DashboardScreen() {
       {/* Hero */}
       <Animated.View entering={FadeInDown.duration(360)}>
         <Card style={styles.hero}>
-          <Text style={[styles.heroCaption, { color: theme.textSecondary }]}>Net balance · this month</Text>
+          <Text style={[styles.heroCaption, { color: theme.textSecondary }]}>This month</Text>
           <CountUpMoney value={t.balance} symbol={symbol} style={[styles.balance, { color: theme.text }, Tabular]} />
           <View style={[styles.heroDivider, { backgroundColor: theme.separator }]} />
           <View style={styles.heroRow}>
@@ -176,13 +190,18 @@ export default function DashboardScreen() {
 
 const styles = StyleSheet.create({
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  monthRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Spacing.four, paddingBottom: Spacing.three },
+  monthRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Spacing.four, marginTop: Spacing.four, paddingBottom: Spacing.three },
   monthBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   monthLabel: { fontSize: 17, fontWeight: '600' },
 
+  totalCard: { paddingVertical: Spacing.four },
+  totalCaption: { fontSize: 13, fontWeight: '500' },
+  totalValue: { fontSize: 42, fontWeight: '700', letterSpacing: -0.5, marginTop: 4, marginBottom: 6, lineHeight: 48 },
+  totalSub: { fontSize: 12, fontWeight: '500' },
+
   hero: { paddingVertical: Spacing.four },
   heroCaption: { fontSize: 13, fontWeight: '500' },
-  balance: { fontSize: 42, fontWeight: '700', letterSpacing: -0.5, marginTop: 4, lineHeight: 48 },
+  balance: { fontSize: 28, fontWeight: '700', letterSpacing: -0.3, marginTop: 4, lineHeight: 34 },
   heroDivider: { height: StyleSheet.hairlineWidth, marginVertical: Spacing.three },
   heroRow: { flexDirection: 'row', alignItems: 'center' },
   heroCol: { flex: 1, gap: 3 },
